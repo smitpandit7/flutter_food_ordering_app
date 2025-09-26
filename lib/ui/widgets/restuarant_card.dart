@@ -57,8 +57,9 @@ class RestaurantCard extends StatelessWidget {
                   borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
                 ),
                 child: ClipRRect(
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-                  child: Image.network(
+                  borderRadius:
+                      const BorderRadius.vertical(top: Radius.circular(16)),
+                  child: Image.asset(
                     imagePath,
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) {
@@ -82,13 +83,14 @@ class RestaurantCard extends StatelessWidget {
                   ),
                 ),
               ),
-              
+
               // Gradient overlay for better text visibility
               Container(
                 height: 180,
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                  borderRadius:
+                      const BorderRadius.vertical(top: Radius.circular(16)),
                   gradient: LinearGradient(
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
@@ -108,10 +110,10 @@ class RestaurantCard extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // Promotion Badge
                     if (isPromoted == true)
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 6),
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             colors: [Colors.purple[600]!, Colors.pink[500]!],
@@ -125,7 +127,7 @@ class RestaurantCard extends StatelessWidget {
                             ),
                           ],
                         ),
-                        child:const  Row(
+                        child: const Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Icon(
@@ -133,8 +135,8 @@ class RestaurantCard extends StatelessWidget {
                               color: Colors.white,
                               size: 14,
                             ),
-                             SizedBox(width: 4),
-                             Text(
+                            SizedBox(width: 4),
+                            Text(
                               'PROMOTED',
                               style: TextStyle(
                                 color: Colors.white,
@@ -146,31 +148,8 @@ class RestaurantCard extends StatelessWidget {
                           ],
                         ),
                       ),
-                    
+
                     // Favorite Button
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.9),
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            blurRadius: 8,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      child: IconButton(
-                        onPressed: () {
-                          // Handle favorite toggle
-                        },
-                        icon: Icon(
-                          Icons.favorite_border,
-                          color: Colors.grey[600],
-                          size: 20,
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               ),
@@ -185,7 +164,8 @@ class RestaurantCard extends StatelessWidget {
                   children: [
                     // Rating Badge
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 6),
                       decoration: BoxDecoration(
                         color: _getRatingColor(rating),
                         borderRadius: BorderRadius.circular(20),
@@ -237,7 +217,8 @@ class RestaurantCard extends StatelessWidget {
                         height: 16,
                         decoration: BoxDecoration(
                           border: Border.all(
-                            color: isVeg ? Colors.green[600]! : Colors.red[600]!,
+                            color:
+                                isVeg ? Colors.green[600]! : Colors.red[600]!,
                             width: 2,
                           ),
                           borderRadius: BorderRadius.circular(2),
@@ -247,7 +228,8 @@ class RestaurantCard extends StatelessWidget {
                             width: 6,
                             height: 6,
                             decoration: BoxDecoration(
-                              color: isVeg ? Colors.green[600]! : Colors.red[600]!,
+                              color:
+                                  isVeg ? Colors.green[600]! : Colors.red[600]!,
                               shape: BoxShape.circle,
                             ),
                           ),
@@ -313,16 +295,20 @@ class RestaurantCard extends StatelessWidget {
                       text: deliveryTime,
                       color: Colors.orange[600]!,
                     ),
-                    
+
                     const SizedBox(width: 12),
-                    
+
                     // Delivery Fee
                     _buildInfoChip(
                       icon: Icons.delivery_dining_rounded,
-                      text: deliveryFee == '0' || deliveryFee.toLowerCase() == 'free' 
-                          ? 'FREE' : '₹$deliveryFee',
-                      color: deliveryFee == '0' || deliveryFee.toLowerCase() == 'free'
-                          ? Colors.green[600]! : Colors.blue[600]!,
+                      text: deliveryFee == '0' ||
+                              deliveryFee.toLowerCase() == 'free'
+                          ? 'FREE'
+                          : '₹$deliveryFee',
+                      color: deliveryFee == '0' ||
+                              deliveryFee.toLowerCase() == 'free'
+                          ? Colors.green[600]!
+                          : Colors.blue[600]!,
                     ),
                   ],
                 ),

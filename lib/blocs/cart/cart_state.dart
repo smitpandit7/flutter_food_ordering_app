@@ -1,18 +1,30 @@
 import 'package:equatable/equatable.dart';
 import 'package:food_ordering_app/models/menu_items.dart';
 
-class CartState extends Equatable {
-  final Map<MenuItem, int> items;
-  const CartState({this.items = const {}});
+class CartItem {
+  final MenuItem item;
+  final int quantity;
 
-  double get total =>
-      items.entries.fold(0.0, (s, e) => s + e.key.price * e.value);
+  const CartItem({required this.item, required this.quantity});
 
-  int get totalItems => items.values.fold(0, (s, e) => s + e);
-
-  CartState copyWith({Map<MenuItem, int>? items}) {
-    return CartState(items: items ?? this.items);
+  CartItem copyWith({MenuItem? item, int? quantity}) {
+    return CartItem(
+      item: item ?? this.item,
+      quantity: quantity ?? this.quantity,
+    );
   }
 
-  @override List<Object?> get props => [items];
+  double get totalPrice => item.price * quantity;
+}
+
+class CartState extends Equatable {
+  final List<CartItem> items;
+
+  const CartState({this.items = const []});
+
+  double get totalAmount =>
+      items.fold(0, (sum, cartItem) => sum + cartItem.totalPrice);
+
+  @override
+  List<Object?> get props => [items];
 }

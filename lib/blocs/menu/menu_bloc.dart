@@ -16,7 +16,7 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
         );
         emit(MenuLoaded(restaurant.menuItem));
       } catch (e) {
-        emit(MenuError("Failed to load menu"));
+        emit(const MenuError("Failed to load menu"));
       }
     });
   }

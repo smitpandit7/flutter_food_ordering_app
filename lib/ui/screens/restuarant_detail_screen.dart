@@ -1,14 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_ordering_app/blocs/cart/cart_bloc.dart';
+import 'package:food_ordering_app/blocs/cart/cart_state.dart';
 import 'package:food_ordering_app/blocs/menu/menu_bloc.dart';
 import 'package:food_ordering_app/blocs/menu/menu_event.dart';
 import 'package:food_ordering_app/blocs/menu/menu_state.dart';
 import 'package:food_ordering_app/models/restuarant.dart';
+import 'package:food_ordering_app/ui/screens/cart_screen.dart';
+import 'package:food_ordering_app/ui/widgets/menu_card_.dart';
+import 'package:food_ordering_app/ui/widgets/widget_circular_loader.dart';
+
+import '../../blocs/cart/cart_event.dart';
+import '../widgets/widget_bottom_cart_card.dart';
 
 class RestaurantDetailPage extends StatefulWidget {
   final Restaurant restaurant;
 
-  const RestaurantDetailPage({Key? key, required this.restaurant}) : super(key: key);
+  const RestaurantDetailPage({Key? key, required this.restaurant})
+      : super(key: key);
 
   @override
   State<RestaurantDetailPage> createState() => _RestaurantDetailPageState();
@@ -41,8 +50,15 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
     double imageOpacity = (1.0 - (_scrollOffset / 200)).clamp(0.0, 1.0);
     bool isScrolled = _scrollOffset > 100;
 
-    return BlocProvider(
-      create: (_) => MenuBloc()..add(LoadMenu(widget.restaurant.name)),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => MenuBloc()..add(LoadMenu(widget.restaurant.name)),
+        ),
+        BlocProvider.value(
+          value: context.read<CartBloc>(), // already provided at root
+        ),
+      ],
       child: Scaffold(
         backgroundColor: Colors.grey[50],
         body: Stack(
@@ -58,7 +74,8 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                   backgroundColor: Colors.white,
                   elevation: isScrolled ? 2 : 0,
                   leading: CircleAvatar(
-                    backgroundColor: isScrolled ? Colors.grey[100] : Colors.white,
+                    backgroundColor:
+                        isScrolled ? Colors.grey[100] : Colors.white,
                     child: IconButton(
                       icon: Icon(
                         Icons.arrow_back,
@@ -73,62 +90,60 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          CircleAvatar(
-                            backgroundColor: isScrolled ? Colors.grey[100] : Colors.white,
-                            child: IconButton(
-                              icon: Icon(
-                                Icons.share,
-                                color: isScrolled ? Colors.black87 : Colors.black,
-                              ),
-                              onPressed: () {},
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          CircleAvatar(
-                            backgroundColor: isScrolled ? Colors.grey[100] : Colors.white,
-                            child: IconButton(
-                              icon: Icon(
-                                Icons.favorite_border,
-                                color: isScrolled ? Colors.black87 : Colors.black,
-                              ),
-                              onPressed: () {},
-                            ),
-                          ),
-                          const SizedBox(width: 8),
                           Stack(
                             children: [
                               CircleAvatar(
-                                backgroundColor: isScrolled ? Colors.grey[100] : Colors.white,
+                                backgroundColor: isScrolled
+                                    ? Colors.grey[100]
+                                    : Colors.white,
                                 child: IconButton(
                                   icon: Icon(
                                     Icons.shopping_cart_outlined,
-                                    color: isScrolled ? Colors.black87 : Colors.black,
+                                    color: isScrolled
+                                        ? Colors.black87
+                                        : Colors.black,
                                   ),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => CartPage(
+                                            restaurantName:
+                                                widget.restaurant.name),
+                                      ),
+                                    );
+                                  },
                                 ),
                               ),
-                              Positioned(
-                                right: 0,
-                                top: 0,
-                                child: Container(
-                                  padding: const EdgeInsets.all(2),
-                                  decoration: BoxDecoration(
-                                    color: Colors.red,
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  constraints: const BoxConstraints(
-                                    minWidth: 16,
-                                    minHeight: 16,
-                                  ),
-                                  child: const Text(
-                                    '1',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 12,
+                              BlocBuilder<CartBloc, CartState>(
+                                builder: (context, cartState) {
+                                  if (cartState.items.isEmpty) {
+                                    return const SizedBox.shrink();
+                                  }
+                                  return Positioned(
+                                    right: 0,
+                                    top: 0,
+                                    child: Container(
+                                      padding: const EdgeInsets.all(2),
+                                      decoration: BoxDecoration(
+                                        color: Colors.red,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      constraints: const BoxConstraints(
+                                        minWidth: 16,
+                                        minHeight: 16,
+                                      ),
+                                      child: Text(
+                                        '${cartState.items.length}',
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 12,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
                                     ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
+                                  );
+                                },
                               ),
                             ],
                           ),
@@ -147,8 +162,8 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                               bottomLeft: Radius.circular(20),
                               bottomRight: Radius.circular(20),
                             ),
-                            child: Image.network(
-                              widget.restaurant.imageUrl,
+                            child: Image.asset(
+                              widget.restaurant.imagePath,
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -225,10 +240,14 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                           spacing: 8,
                           runSpacing: 8,
                           children: [
-                            _buildTag('Pizza', Colors.orange[100]!, Colors.orange[800]!),
-                            _buildTag('Italian', Colors.orange[100]!, Colors.orange[800]!),
-                            _buildTag('Family Friendly', Colors.orange[100]!, Colors.orange[800]!),
-                            _buildTag('Popular', Colors.orange[100]!, Colors.orange[800]!),
+                            _buildTag('Pizza', Colors.orange[100]!,
+                                Colors.orange[800]!),
+                            _buildTag('Italian', Colors.orange[100]!,
+                                Colors.orange[800]!),
+                            _buildTag('Family Friendly', Colors.orange[100]!,
+                                Colors.orange[800]!),
+                            _buildTag('Popular', Colors.orange[100]!,
+                                Colors.orange[800]!),
                           ],
                         ),
 
@@ -239,7 +258,8 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                           children: [
                             Row(
                               children: [
-                                Icon(Icons.star, color: Colors.green[600], size: 18),
+                                Icon(Icons.star,
+                                    color: Colors.green[600], size: 18),
                                 const SizedBox(width: 4),
                                 Text(
                                   '${widget.restaurant.rating} (1247)',
@@ -253,7 +273,8 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                             const SizedBox(width: 24),
                             Row(
                               children: [
-                                Icon(Icons.access_time, color: Colors.grey[600], size: 18),
+                                Icon(Icons.access_time,
+                                    color: Colors.grey[600], size: 18),
                                 const SizedBox(width: 4),
                                 Text(
                                   '25-35 min',
@@ -272,7 +293,8 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                         // Delivery fee info
                         Row(
                           children: [
-                            Icon(Icons.info_outline, color: Colors.grey[600], size: 18),
+                            Icon(Icons.info_outline,
+                                color: Colors.grey[600], size: 18),
                             const SizedBox(width: 4),
                             Text(
                               'Delivery fee \$2.99 • Min order \$15',
@@ -305,19 +327,56 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                   builder: (context, state) {
                     if (state is MenuLoading) {
                       return const SliverFillRemaining(
-                        child: Center(child: CircularProgressIndicator()),
+                        child: Center(child: CustomLoadingWidget()),
                       );
                     } else if (state is MenuLoaded) {
                       return SliverList(
                         delegate: SliverChildBuilderDelegate(
                           (context, index) {
                             final menu = state.menuItems[index];
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 8,
-                              ),
-                              child: _buildMenuItem(menu, index == 0),
+
+                            return BlocBuilder<CartBloc, CartState>(
+                              builder: (context, cartState) {
+                                int quantity = 0;
+                                final item = cartState.items.firstWhere(
+                                  (i) => i.item.id == menu.id,
+                                  orElse: () =>
+                                      CartItem(item: menu, quantity: 0),
+                                );
+                                quantity = item.quantity;
+
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                    vertical: 8,
+                                  ),
+                                  child: WidgetMenuCard(
+                                    menu,
+                                    index == 0,
+                                    quantity: quantity,
+                                    onAddToCart: () {
+                                      context
+                                          .read<CartBloc>()
+                                          .add(AddToCart(menu));
+                                    },
+                                    onIncrement: () {
+                                      context
+                                          .read<CartBloc>()
+                                          .add(IncreaseQuantity(menu));
+                                    },
+                                    onDecrement: () {
+                                      if (quantity == 1) {
+                                        context
+                                            .read<CartBloc>()
+                                            .add(RemoveFromCart(menu));
+                                      }
+                                      context
+                                          .read<CartBloc>()
+                                          .add(DecreaseQuantity(menu));
+                                    },
+                                  ),
+                                );
+                              },
                             );
                           },
                           childCount: state.menuItems.length,
@@ -326,10 +385,7 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                     } else if (state is MenuError) {
                       return SliverFillRemaining(
                         child: Center(
-                          child: Text(
-                            state.message,
-                            style: TextStyle(color: Colors.grey[600]),
-                          ),
+                          child: Text(state.message),
                         ),
                       );
                     }
@@ -337,7 +393,6 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                   },
                 ),
 
-                // Bottom padding to account for cart bar
                 const SliverToBoxAdapter(
                   child: SizedBox(height: 100),
                 ),
@@ -345,86 +400,15 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
             ),
 
             // Bottom Cart Bar
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: Container(
-                margin: const EdgeInsets.all(16),
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-                decoration: BoxDecoration(
-                  color: Colors.orange[600],
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 10,
-                      offset: const Offset(0, -2),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          '3 items in cart',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
-                        Text(
-                          "Tony's Pizza Palace",
-                          style: TextStyle(
-                            color: Colors.white.withOpacity(0.9),
-                            fontSize: 12,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        const Text(
-                          '\$67.96',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        GestureDetector(
-                          onTap: () {
-                            // Navigate to cart
-                          },
-                          child: Row(
-                            children: [
-                              Text(
-                                'View Cart',
-                                style: TextStyle(
-                                  color: Colors.white.withOpacity(0.9),
-                                  fontSize: 14,
-                                ),
-                              ),
-                              const SizedBox(width: 4),
-                              Icon(
-                                Icons.arrow_forward,
-                                color: Colors.white.withOpacity(0.9),
-                                size: 16,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
+            BlocBuilder<CartBloc, CartState>(
+              builder: (context, cartState) {
+                if (cartState.items.isEmpty) return const SizedBox.shrink();
+
+                return WidgetBottomCartCard(
+                  cartState: cartState,
+                  restuarantName: widget.restaurant.name,
+                );
+              },
             ),
           ],
         ),
@@ -446,92 +430,6 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
           fontSize: 12,
           fontWeight: FontWeight.w500,
         ),
-      ),
-    );
-  }
-
-  Widget _buildMenuItem(dynamic menu, bool isPopular) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        menu.name,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black87,
-                        ),
-                      ),
-                    ),
-                    if (isPopular)
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: Colors.orange[600],
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: const Text(
-                          'POPULAR',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  menu.description,
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: Colors.grey[600],
-                    height: 1.4,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  "₹${menu.price.toStringAsFixed(0)}",
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(width: 16),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Image.network(
-              menu.imageUrl,
-              width: 80,
-              height: 80,
-              fit: BoxFit.cover,
-            ),
-          ),
-        ],
       ),
     );
   }

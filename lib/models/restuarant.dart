@@ -4,7 +4,7 @@ class Restaurant {
   final String name;
   final bool isVeg;
   final double rating;
-  final String imageUrl;
+  final String imagePath;
   final List<MenuItem> menuItem;
 
   Restaurant({
@@ -12,6 +12,6 @@ class Restaurant {
     required this.isVeg,
     required this.rating,
     required this.menuItem,
-    required this.imageUrl,
+    required this.imagePath,
   });
 }

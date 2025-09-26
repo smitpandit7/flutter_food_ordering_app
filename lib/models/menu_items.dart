@@ -5,18 +5,21 @@ class MenuItem extends Equatable {
   final String restaurantId;
   final String name;
   final String description;
+  final bool isVeg;
   final double price;
-  final String imageUrl;
+  final String imagePath;
 
   const MenuItem({
     required this.id,
     required this.restaurantId,
     required this.name,
+    required this.isVeg,
     required this.description,
     required this.price,
-    required this.imageUrl,
+    required this.imagePath,
   });
 
   @override
-  List<Object?> get props => [id, restaurantId, name, description, price, imageUrl];
+  List<Object?> get props =>
+      [id, restaurantId, name, description, price, imagePath];
 }
