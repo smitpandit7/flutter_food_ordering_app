@@ -1,30 +1,30 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:food_ordering_app/main.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_ordering_app/blocs/restuarant/restaurant_event.dart';
+import 'package:food_ordering_app/blocs/restuarant/restaurant_bloc.dart';
+import 'package:food_ordering_app/blocs/cart/cart_bloc.dart';
+import 'package:food_ordering_app/ui/screens/home_screen.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget( MyApp());
+  testWidgets('App loads home screen', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (_) => RestaurantBloc()..add(LoadRestaurants())),
+          BlocProvider(create: (_) => CartBloc()),
+        ],
+        child: MaterialApp(home: QuickBiteView()),
+      ),
+    );
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    // Wait for any async operations in bloc
+    await tester.pumpAndSettle();
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    // ✅ Check that the main screen widget exists
+    expect(find.byType(QuickBiteView), findsOneWidget);
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // ✅ Optionally, check for a widget that is always in your app
+    expect(find.byType(AppBar), findsOneWidget);
   });
 }
