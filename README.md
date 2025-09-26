@@ -2,8 +2,25 @@
 
 A food ordering workflow app built with Flutter using BloC state management.
 
-## 📸 Screenshot
-![App Screenshot](screenshot.png)
+## 📸 Screenshots
+
+### Home Screen
+![Home Screen](assets/screenshots/HomeScreen.jpeg)
+
+### Restuarant Screen
+![Home Screen](assets/screenshots/ResortdetailsScreen.jpeg)
+
+### Order Details Screen
+![Cart Screen](assets/screenshots/OrderScreen.jpeg) 
+
+### Cart Screen
+![Cart Screen](assets/screenshots/CartScreen.jpeg)
+
+### Checkout Screen
+![Checkout Screen](assets/screenshots/CheckoutScreen.jpeg)
+
+### Order Confirmed Screen
+![Cart Screen](assets/screenshots/OrderConfirmation.jpeg)
 
 ## 🚀 Features
 - Browse restaurants and menus
@@ -17,3 +34,11 @@ A food ordering workflow app built with Flutter using BloC state management.
 1. Clone the repo
    ```bash
    git clone https://github.com/smitpandit7/flutter_food_ordering_app.git
+
+2. Install dependencies
+
+    flutter pub get
+
+3. Run the app on an emulator or connected device
+
+    flutter run
