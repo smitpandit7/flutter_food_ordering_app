@@ -45,7 +45,6 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Calculate dynamic heights based on scroll
     double headerHeight = (280 - _scrollOffset).clamp(120.0, 280.0);
     double imageOpacity = (1.0 - (_scrollOffset / 200)).clamp(0.0, 1.0);
     bool isScrolled = _scrollOffset > 100;
@@ -56,18 +55,16 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
           create: (_) => MenuBloc()..add(LoadMenu(widget.restaurant.name)),
         ),
         BlocProvider.value(
-          value: context.read<CartBloc>(), // already provided at root
+          value: context.read<CartBloc>(),
         ),
       ],
       child: Scaffold(
         backgroundColor: Colors.grey[50],
         body: Stack(
           children: [
-            // Main scrollable content
             CustomScrollView(
               controller: _scrollController,
               slivers: [
-                // Header section that shrinks on scroll
                 SliverAppBar(
                   expandedHeight: 280,
                   pinned: true,
@@ -107,7 +104,7 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (_) => CartPage(
+                                        builder: (_) => CartScreen(
                                             restaurantName:
                                                 widget.restaurant.name),
                                       ),
@@ -168,7 +165,6 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                             ),
                           ),
                         ),
-                        // Gradient overlay when scrolling
                         if (isScrolled)
                           Container(
                             decoration: BoxDecoration(
@@ -197,8 +193,6 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                     titlePadding: const EdgeInsets.only(left: 16, bottom: 16),
                   ),
                 ),
-
-                // Restaurant Info Section
                 SliverToBoxAdapter(
                   child: Container(
                     color: Colors.grey[50],
@@ -206,7 +200,6 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // Restaurant name and description (hidden when scrolled up)
                         AnimatedOpacity(
                           opacity: isScrolled ? 0.0 : 1.0,
                           duration: const Duration(milliseconds: 200),
@@ -234,8 +227,6 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                             ],
                           ),
                         ),
-
-                        // Tags
                         Wrap(
                           spacing: 8,
                           runSpacing: 8,
@@ -250,10 +241,7 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                                 Colors.orange[800]!),
                           ],
                         ),
-
                         const SizedBox(height: 16),
-
-                        // Rating and delivery info
                         Row(
                           children: [
                             Row(
@@ -287,10 +275,7 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                             ),
                           ],
                         ),
-
                         const SizedBox(height: 12),
-
-                        // Delivery fee info
                         Row(
                           children: [
                             Icon(Icons.info_outline,
@@ -305,10 +290,7 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                             ),
                           ],
                         ),
-
                         const SizedBox(height: 24),
-
-                        // Popular Items Section Header
                         const Text(
                           'Popular Items',
                           style: TextStyle(
@@ -321,8 +303,6 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                     ),
                   ),
                 ),
-
-                // Menu Items List - This will expand as user scrolls
                 BlocBuilder<MenuBloc, MenuState>(
                   builder: (context, state) {
                     if (state is MenuLoading) {
@@ -392,14 +372,11 @@ class _RestaurantDetailPageState extends State<RestaurantDetailPage> {
                     return const SliverToBoxAdapter(child: SizedBox.shrink());
                   },
                 ),
-
                 const SliverToBoxAdapter(
                   child: SizedBox(height: 100),
                 ),
               ],
             ),
-
-            // Bottom Cart Bar
             BlocBuilder<CartBloc, CartState>(
               builder: (context, cartState) {
                 if (cartState.items.isEmpty) return const SizedBox.shrink();

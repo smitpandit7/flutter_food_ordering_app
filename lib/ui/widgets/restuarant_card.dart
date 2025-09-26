@@ -8,8 +8,8 @@ class RestaurantCard extends StatelessWidget {
   final String deliveryFee;
   final String minOrder;
   final String imagePath;
-  final String? cuisine; // Optional cuisine type
-  final bool? isPromoted; // Optional promotion badge
+  final String? cuisine;
+  final bool? isPromoted;
 
   const RestaurantCard({
     Key? key,
@@ -47,7 +47,6 @@ class RestaurantCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Image Section with Overlays
           Stack(
             children: [
               Container(
@@ -83,8 +82,6 @@ class RestaurantCard extends StatelessWidget {
                   ),
                 ),
               ),
-
-              // Gradient overlay for better text visibility
               Container(
                 height: 180,
                 width: double.infinity,
@@ -101,8 +98,6 @@ class RestaurantCard extends StatelessWidget {
                   ),
                 ),
               ),
-
-              // Top Row - Promotion badge and Favorite
               Positioned(
                 top: 12,
                 left: 12,
@@ -148,13 +143,9 @@ class RestaurantCard extends StatelessWidget {
                           ],
                         ),
                       ),
-
-                    // Favorite Button
                   ],
                 ),
               ),
-
-              // Bottom Row - Rating and Veg/Non-veg
               Positioned(
                 bottom: 12,
                 left: 12,
@@ -162,7 +153,6 @@ class RestaurantCard extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // Rating Badge
                     Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 6),
@@ -197,8 +187,6 @@ class RestaurantCard extends StatelessWidget {
                         ],
                       ),
                     ),
-
-                    // Veg/Non-veg Indicator
                     Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
@@ -241,14 +229,11 @@ class RestaurantCard extends StatelessWidget {
               ),
             ],
           ),
-
-          // Content Section
           Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Restaurant Name and Cuisine
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -283,22 +268,15 @@ class RestaurantCard extends StatelessWidget {
                     ),
                   ],
                 ),
-
                 const SizedBox(height: 12),
-
-                // Delivery Info Row
                 Row(
                   children: [
-                    // Delivery Time
                     _buildInfoChip(
                       icon: Icons.access_time_rounded,
                       text: deliveryTime,
                       color: Colors.orange[600]!,
                     ),
-
                     const SizedBox(width: 12),
-
-                    // Delivery Fee
                     _buildInfoChip(
                       icon: Icons.delivery_dining_rounded,
                       text: deliveryFee == '0' ||
@@ -312,10 +290,7 @@ class RestaurantCard extends StatelessWidget {
                     ),
                   ],
                 ),
-
                 const SizedBox(height: 8),
-
-                // Minimum Order
                 Row(
                   children: [
                     Icon(

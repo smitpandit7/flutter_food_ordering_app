@@ -39,7 +39,7 @@ class _WidgetBottomCartCardState extends State<WidgetBottomCartCard> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (_) => CartPage(
+                builder: (_) => CartScreen(
                   restaurantName: widget.restuarantName.toString(),
                 ),
               ),

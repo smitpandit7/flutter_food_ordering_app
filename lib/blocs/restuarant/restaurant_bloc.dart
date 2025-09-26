@@ -7,7 +7,7 @@ class RestaurantBloc extends Bloc<RestaurantEvent, RestaurantState> {
   RestaurantBloc() : super(RestaurantInitial()) {
     on<LoadRestaurants>((event, emit) async {
       emit(RestaurantLoading());
-      await Future.delayed(const Duration(seconds: 2)); // simulate API call
+      await Future.delayed(const Duration(seconds: 2));
       try {
         emit(RestaurantLoaded(dummyRestaurants));
       } catch (e) {

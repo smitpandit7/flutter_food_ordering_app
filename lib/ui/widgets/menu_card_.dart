@@ -29,7 +29,6 @@ Widget WidgetMenuCard(
           padding: const EdgeInsets.all(16),
           child: Row(
             children: [
-              // Image Section
               Container(
                 width: 90,
                 height: 90,
@@ -63,7 +62,6 @@ Widget WidgetMenuCard(
                 ),
               ),
               const SizedBox(width: 16),
-              // Content Section
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -167,7 +165,6 @@ Widget WidgetMenuCard(
                             ),
                           ],
                         ),
-                        // Cart Controls
                         quantity == 0
                             ? Container(
                                 height: 36,

@@ -123,7 +123,6 @@ class LoadingPainter extends CustomPainter {
     final center = Offset(size.width / 2, size.height / 2);
     final radius = (size.width - strokeWidth) / 2;
 
-    // Background circle
     final backgroundPaint = Paint()
       ..color = color.withOpacity(0.1)
       ..strokeWidth = strokeWidth
@@ -132,7 +131,6 @@ class LoadingPainter extends CustomPainter {
 
     canvas.drawCircle(center, radius, backgroundPaint);
 
-    // Gradient stroke
     final gradientPaint = Paint()
       ..shader = LinearGradient(
         colors: [
@@ -147,11 +145,10 @@ class LoadingPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
 
-    // Draw arc (75% of the circle)
     canvas.drawArc(
       Rect.fromCircle(center: center, radius: radius),
-      -3.14159 / 2, // Start from top
-      3.14159 * 1.5, // 75% of circle
+      -3.14159 / 2,
+      3.14159 * 1.5,
       false,
       gradientPaint,
     );
@@ -161,7 +158,6 @@ class LoadingPainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
-// Alternative simple loading widget
 class SimpleLoadingWidget extends StatefulWidget {
   final double size;
   final Color? color;
@@ -230,7 +226,6 @@ class _SimpleLoadingWidgetState extends State<SimpleLoadingWidget>
   }
 }
 
-// Full screen loading overlay
 class LoadingOverlay extends StatelessWidget {
   final String? message;
   final Color? backgroundColor;
@@ -271,7 +266,6 @@ class LoadingOverlay extends StatelessWidget {
   }
 }
 
-// Example usage
 class LoadingExamplePage extends StatefulWidget {
   @override
   _LoadingExamplePageState createState() => _LoadingExamplePageState();
@@ -306,8 +300,6 @@ class _LoadingExamplePageState extends State<LoadingExamplePage> {
                   ),
                 ),
                 const SizedBox(height: 40),
-
-                // Custom Loading Widget
                 Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
@@ -337,10 +329,7 @@ class _LoadingExamplePageState extends State<LoadingExamplePage> {
                     ],
                   ),
                 ),
-
                 const SizedBox(height: 30),
-
-                // Simple Loading Widget
                 Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
@@ -370,16 +359,13 @@ class _LoadingExamplePageState extends State<LoadingExamplePage> {
                     ],
                   ),
                 ),
-
                 const SizedBox(height: 40),
-
                 ElevatedButton(
                   onPressed: () {
                     setState(() {
                       showOverlay = true;
                     });
 
-                    // Simulate loading
                     Future.delayed(const Duration(seconds: 3), () {
                       setState(() {
                         showOverlay = false;
@@ -405,8 +391,6 @@ class _LoadingExamplePageState extends State<LoadingExamplePage> {
               ],
             ),
           ),
-
-          // Loading Overlay
           if (showOverlay)
             const LoadingOverlay(
               message: 'Placing your order...',

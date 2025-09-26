@@ -3,17 +3,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_ordering_app/blocs/cart/cart_bloc.dart';
 import 'package:food_ordering_app/blocs/cart/cart_state.dart';
 
-class CheckoutPage extends StatefulWidget {
+class CheckoutScreen extends StatefulWidget {
   final String restaurantName;
 
-  const CheckoutPage({Key? key, required this.restaurantName})
+  const CheckoutScreen({Key? key, required this.restaurantName})
       : super(key: key);
 
   @override
-  State<CheckoutPage> createState() => _CheckoutPageState();
+  State<CheckoutScreen> createState() => _CheckoutScreenState();
 }
 
-class _CheckoutPageState extends State<CheckoutPage> {
+class _CheckoutScreenState extends State<CheckoutScreen> {
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _phoneController = TextEditingController();
@@ -63,7 +63,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Order Summary
                 Container(
                   color: Colors.white,
                   padding: const EdgeInsets.all(16),
@@ -135,10 +134,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     ],
                   ),
                 ),
-
                 const SizedBox(height: 12),
-
-                // Delivery Address Section
                 Container(
                   color: Colors.white,
                   padding: const EdgeInsets.all(16),
@@ -147,11 +143,11 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
+                        const Row(
                           children: [
-                            const Icon(Icons.location_on, color: Colors.orange),
-                            const SizedBox(width: 8),
-                            const Text(
+                            Icon(Icons.location_on, color: Colors.orange),
+                            SizedBox(width: 8),
+                            Text(
                               'Delivery Address',
                               style: TextStyle(
                                 fontSize: 16,
@@ -223,21 +219,18 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 12),
-
-                // Payment Method Section
                 Container(
                   color: Colors.white,
                   padding: const EdgeInsets.all(16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
+                      const Row(
                         children: [
-                          const Icon(Icons.payment, color: Colors.orange),
-                          const SizedBox(width: 8),
-                          const Text(
+                          Icon(Icons.payment, color: Colors.orange),
+                          SizedBox(width: 8),
+                          Text(
                             'Payment Method',
                             style: TextStyle(
                               fontSize: 16,
@@ -263,7 +256,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     ],
                   ),
                 ),
-
                 const SizedBox(height: 20),
               ],
             ),
@@ -328,7 +320,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
 class OrderConfirmationDialog extends StatelessWidget {
   final String restaurantName;
-  final List<dynamic> cartItems; // Replace with your CartItem type
+  final List<dynamic> cartItems;
   final double totalAmount;
   final String customerName;
   final String phoneNumber;
@@ -426,12 +418,12 @@ class OrderConfirmationDialog extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 4),
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text('Delivery Time:',
+                    Text('Delivery Time:',
                         style: TextStyle(fontWeight: FontWeight.w500)),
-                    const Text('30-45 min'),
+                    Text('30-45 min'),
                   ],
                 ),
               ],
@@ -453,7 +445,6 @@ class OrderConfirmationDialog extends StatelessWidget {
           width: double.infinity,
           child: ElevatedButton(
             onPressed: () {
-              // Clear the cart and navigate back to home
               Navigator.of(context).popUntil((route) => route.isFirst);
             },
             style: ElevatedButton.styleFrom(

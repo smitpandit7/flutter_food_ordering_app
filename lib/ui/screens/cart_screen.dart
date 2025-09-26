@@ -5,10 +5,10 @@ import 'package:food_ordering_app/blocs/cart/cart_event.dart';
 import 'package:food_ordering_app/blocs/cart/cart_state.dart';
 import 'package:food_ordering_app/ui/screens/checkout_screen.dart';
 
-class CartPage extends StatelessWidget {
+class CartScreen extends StatelessWidget {
   final String restaurantName;
 
-  const CartPage({Key? key, required this.restaurantName}) : super(key: key);
+  const CartScreen({Key? key, required this.restaurantName}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,30 +45,31 @@ class CartPage extends StatelessWidget {
             children: [
               Container(
                 color: Colors.white,
-                padding: EdgeInsets.all(16),
+                padding: const EdgeInsets.all(16),
                 child: Row(
                   children: [
                     CircleAvatar(
                       backgroundColor: Colors.orange[100],
-                      child: Icon(Icons.restaurant, color: Colors.orange),
+                      child: const Icon(Icons.restaurant, color: Colors.orange),
                     ),
-                    SizedBox(width: 12),
+                    const SizedBox(width: 12),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             restaurantName,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
-                          SizedBox(height: 4),
+                          const SizedBox(height: 4),
                           Row(
                             children: [
-                              Icon(Icons.star, color: Colors.orange, size: 16),
-                              SizedBox(width: 4),
+                              const Icon(Icons.star,
+                                  color: Colors.orange, size: 16),
+                              const SizedBox(width: 4),
                               Text(
                                 '4.8 • 25-35 min',
                                 style: TextStyle(
@@ -82,7 +83,8 @@ class CartPage extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8, vertical: 4),
                       decoration: BoxDecoration(
                         color: Colors.green[100],
                         borderRadius: BorderRadius.circular(12),
@@ -168,8 +170,6 @@ class CartPage extends StatelessWidget {
                   },
                 ),
               ),
-
-              // ✅ Checkout Button
               Container(
                 color: Colors.white,
                 padding: const EdgeInsets.all(16),
@@ -180,9 +180,8 @@ class CartPage extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (_) => CheckoutPage(
+                            builder: (_) => CheckoutScreen(
                                   restaurantName: restaurantName,
-                                  // totalAmount: state.totalAmount,
                                 )),
                       );
                     },

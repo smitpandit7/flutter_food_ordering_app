@@ -41,7 +41,6 @@ class _QuickBiteViewState extends State<QuickBiteView>
       backgroundColor: Colors.grey[50],
       body: CustomScrollView(
         slivers: [
-          // Modern App Bar with gradient
           SliverAppBar(
               expandedHeight: 120,
               floating: false,
@@ -99,9 +98,7 @@ class _QuickBiteViewState extends State<QuickBiteView>
                   titlePadding: const EdgeInsets.only(left: 16, bottom: 16),
                 ),
               )),
-
           const SliverToBoxAdapter(child: SizedBox(height: 24)),
-
           SliverToBoxAdapter(
             child: FadeTransition(
               opacity: _fadeAnimation,
@@ -133,8 +130,6 @@ class _QuickBiteViewState extends State<QuickBiteView>
               ),
             ),
           ),
-
-          // Restaurant List with enhanced animation
           BlocBuilder<RestaurantBloc, RestaurantState>(
             builder: (context, state) {
               if (state is RestaurantLoading) {
@@ -256,8 +251,6 @@ class _QuickBiteViewState extends State<QuickBiteView>
               return const SliverToBoxAdapter(child: SizedBox.shrink());
             },
           ),
-
-          // Bottom padding
           const SliverToBoxAdapter(child: SizedBox(height: 24)),
         ],
       ),

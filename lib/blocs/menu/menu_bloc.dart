@@ -7,11 +7,10 @@ class MenuBloc extends Bloc<MenuEvent, MenuState> {
   MenuBloc() : super(MenuInitial()) {
     on<LoadMenu>((event, emit) async {
       emit(MenuLoading());
-      await Future.delayed(const Duration(seconds: 1)); // simulate API call
+      await Future.delayed(const Duration(seconds: 1));
       try {
-        // find restaurant by id
         final restaurant = dummyRestaurants.firstWhere(
-          (r) => r.name == event.restaurantId, // using name as id for dummy
+          (r) => r.name == event.restaurantId,
           orElse: () => throw Exception("Restaurant not found"),
         );
         emit(MenuLoaded(restaurant.menuItem));
