@@ -7,7 +7,7 @@ import 'package:food_ordering_app/blocs/menu/menu_event.dart';
 import 'package:food_ordering_app/blocs/menu/menu_state.dart';
 import 'package:food_ordering_app/models/restuarant.dart';
 import 'package:food_ordering_app/ui/screens/cart_screen.dart';
-import 'package:food_ordering_app/ui/widgets/menu_card_.dart';
+import 'package:food_ordering_app/ui/widgets/widget_menu_card_.dart';
 import 'package:food_ordering_app/ui/widgets/widget_circular_loader.dart';
 
 import '../../blocs/cart/cart_event.dart';
