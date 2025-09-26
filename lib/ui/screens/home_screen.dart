@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_ordering_app/blocs/restuarant/restaurant_bloc.dart';
 import 'package:food_ordering_app/blocs/restuarant/restaurant_state.dart';
 import 'package:food_ordering_app/ui/screens/restuarant_detail_screen.dart';
-import 'package:food_ordering_app/ui/widgets/restuarant_card.dart';
+import 'package:food_ordering_app/ui/widgets/widget_restuarant_card.dart';
 import 'package:food_ordering_app/ui/widgets/widget_circular_loader.dart';
 
 class QuickBiteView extends StatefulWidget {
